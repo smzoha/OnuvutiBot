@@ -1,11 +1,11 @@
 import os
 
-import bnlp
 import pandas as pd
+from bnlp.cleantext.clean import CleanText
 
 
 def preprocess(input_data):
-    cleaner = bnlp.CleanText(remove_url=True, remove_email=True)
+    cleaner = CleanText(remove_url=True, remove_email=True, remove_punct=True, replace_with_punct='')
 
     for i in range(0, len(input_data)):
         tmp = input_data[i]
