@@ -10,6 +10,7 @@ def preprocess(input_data):
     for i in range(0, len(input_data)):
         tmp = input_data[i]
         tmp = tmp.strip()
+        tmp = tmp.replace('[a-zA-Z\\s]', '')
         input_data[i] = cleaner(tmp)
 
     return input_data
