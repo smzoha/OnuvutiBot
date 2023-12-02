@@ -58,5 +58,5 @@ print('Writing cleaned-up data to file')
 if not os.path.exists('./data'):
     os.mkdir('./data')
 
-data.to_csv('./data/clean-data.csv', index=False)
+data.to_csv('./data/clean-data.csv', index=False, encoding='utf-8-sig')
 print('Write successful to `./data/clean-data.csv`')
