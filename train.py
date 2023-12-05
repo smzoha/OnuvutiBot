@@ -5,7 +5,7 @@ from bnlp.tokenizer.basic import BasicTokenizer
 from sklearn.model_selection import train_test_split
 
 
-def get_tokens(X, y):
+def get_vocab(X, y):
     tokens = []
     tokenizer = BasicTokenizer()
 
@@ -18,19 +18,20 @@ def get_tokens(X, y):
     return list(set(tokens))
 
 
-def word_embeddings(tokens, verbose):
-    glove = BengaliWord2Vec()
+def word_embeddings(vocab, verbose):
+    word2vec = BengaliWord2Vec()
     vectors = []
     failed_tokens = []
 
-    for token in tokens:
+    for word in vocab:
         try:
-            vectors.append(glove.get_word_vector(token))
+            vectors.append(word2vec.get_word_vector(word))
         except KeyError:
-            failed_tokens.append(token)
+            vectors.append(np.zeros(100))
+            failed_tokens.append(word)
 
             if verbose:
-                print('Failed to generate for token:', token)
+                print('Failed to generate for token:', word)
 
     return vectors, failed_tokens
 
@@ -40,12 +41,12 @@ data = pd.read_csv('./data/clean-data.csv', encoding='utf-8-sig')
 X = np.array(data['Questions']).astype('str')
 y = np.array(data['Answers']).astype('str')
 
+vocab = get_vocab(X, y)
+print('Generated vocab. Vocabulary count:', len(vocab))
+
+embeddings, failed_words = word_embeddings(vocab, verbose=False)
+print('Generated Word Embeddings from Tokens. Vector Count:', len(embeddings))
+print('Failed Token Count (patched with zeroes):', len(failed_words))
+
 print('Splitting dataset to train/test sets with ratio of 70-30')
 X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=0.7, random_state=False)
-
-tokens = get_tokens(X, y)
-print('Generated tokens. Vocabulary count:', len(tokens))
-
-vectors, failed_tokens = word_embeddings(tokens, verbose=False)
-print('Generated Word Embeddings from Tokens. Vector Count:', len(vectors))
-print('Failed Token Count:', len(failed_tokens))
