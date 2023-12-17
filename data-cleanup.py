@@ -1,18 +1,7 @@
 import os
 
 import pandas as pd
-from bnlp.cleantext.clean import CleanText
 
-
-def preprocess(input_data):
-    cleaner = CleanText(remove_url=True, remove_email=True, remove_punct=True, replace_with_punct='')
-
-    for i in range(0, len(input_data)):
-        tmp = input_data[i]
-        tmp = tmp.strip()
-        input_data[i] = cleaner(tmp)
-
-    return input_data
 
 
 # Load dataset
@@ -33,25 +22,6 @@ data = data.reset_index(drop=True)
 print('Data summary (after dropping na/duplicates)')
 print(data.describe())
 
-print('===================================')
-
-# Print first 10 Questions/Answers
-print('First 10 Questions/Answers')
-print(data.head(10))
-
-print('===================================')
-
-# Cleanup unwanted characters
-data['Questions'] = preprocess(data['Questions'])
-data['Answers'] = preprocess(data['Answers'])
-
-print('First 10 Questions/Answers (after processing)')
-print(data.head(10))
-
-print('===================================')
-
-print('Data summary (after cleaning up)')
-print(data.describe())
 print('===================================')
 
 print('Writing cleaned-up data to file')

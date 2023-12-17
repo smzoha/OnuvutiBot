@@ -6,7 +6,9 @@ name = "pypi"
 [packages]
 numpy = '*'
 pandas = '*'
-bnlp-toolkit = '*'
+
+scikit-learn = '*'
+tensorflow = '*'
 
 kaggle = '*'
 
